@@ -5,25 +5,31 @@ import re
 def get_features(row):
     """ access the wanted fields from one row of data """
     location_id = row["location"]["id"]
-    location_name = row["location"]["name"]
+    try:
+        location_name = row["location"]["name"]
+    except:
+        location_name = None
     try:
         tags = row["tags"]
     except:
         tags = None
     timestamp = row["taken_at_timestamp"]
 
-    # address_str = row["location"]["address_json"]
-    # print(re.sub(r"([\{\}])", "", address_str).split(","))
+    try:
+        address_str = json.loads(row["location"]["address_json"])
+        address = address_str["street_address"]
+        zip_code = address_str["zip_code"]
+        city_name = address_str["city_name"]
+        region_name = address_str["region_name"]
+    except:
+        address_str = []
+        address = []
+        zip_code = []
+        city_name = []
+        region_name = []
 
 
-    # address = row["location"]["address_json"]["street_address"]
-    # zip_code = row["location"]["address_json"]["zip_code"]
-    # city_name = row["location"]["address_json"]["city_name"]
-    # region_name = row["location"]["address_json"]["region_name"]
-
-
-
-    return [location_id, location_name, tags, timestamp]
+    return [location_id, location_name, address, zip_code, city_name, region_name, tags, timestamp]
 
 
 def read():
@@ -31,20 +37,17 @@ def read():
 
     with open(filepath) as f:
         data = json.load(f)
-
     data = data["GraphImages"]
-    
+
     print(len(data)) # there is 20 pictures scraped
 
-    
     # create a dataframe for out data
-    df = pd.DataFrame(columns = ["location_id", "location_name", "tags", "timestamp"])
+    df = pd.DataFrame(columns = ["location_id", "location_name", "address", "zip_code", "city_name", "region_name", "tags", "timestamp"])
     for i in range(len(data)):
         print(i)
         df.loc[len(df)] = get_features(data[i])
 
-    print(df)
-
+    print(df.head())
 
 
 def main():
