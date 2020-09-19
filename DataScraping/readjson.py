@@ -6,11 +6,14 @@ def get_features(row):
     """ access the wanted fields from one row of data """
     location_id = row["location"]["id"]
     location_name = row["location"]["name"]
-    tags = row["tags"]
+    try:
+        tags = row["tags"]
+    except:
+        tags = None
     timestamp = row["taken_at_timestamp"]
 
-    address_str = row["location"]["address_json"]
-    print(re.sub(r"([\{\}])", "", address_str).split(","))
+    # address_str = row["location"]["address_json"]
+    # print(re.sub(r"([\{\}])", "", address_str).split(","))
 
 
     # address = row["location"]["address_json"]["street_address"]
@@ -36,10 +39,15 @@ def read():
 
     address_str = data[0]["location"]["address_json"]
     print(re.sub(r"([\{\}])", "", address_str).split(","))
-
     
+    # create a dataframe for out data
+    df = pd.DataFrame(columns = ["location_id", "location_name", "tags", "timestamp"])
+    for i in range(len(data)):
+        print(i)
+        df.loc[len(df)] = get_features(data[i])
 
-    print(get_features(data[0]))
+    print(df)
+
 
 
 def main():
