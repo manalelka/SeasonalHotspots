@@ -33,12 +33,9 @@ def read():
         data = json.load(f)
 
     data = data["GraphImages"]
-    print(type(data))
+    
     print(len(data)) # there is 20 pictures scraped
 
-
-    address_str = data[0]["location"]["address_json"]
-    print(re.sub(r"([\{\}])", "", address_str).split(","))
     
     # create a dataframe for out data
     df = pd.DataFrame(columns = ["location_id", "location_name", "tags", "timestamp"])
