@@ -53,7 +53,7 @@ def read():
 
     start = time.time()
 
-    temp = pd.DataFrame(list(map(get_features, data)),
+    df = pd.DataFrame(list(map(get_features, data)),
         columns = ["location_id", "location_name", "address", "zip_code", "city_name", "region_name", "tags", "timestamp"])
     
     end = time.time()
@@ -67,6 +67,8 @@ def read():
     # end = time.time()
     # print("mapping to df with loop: ", end - start)
 
+    print(df.head())
+    
 
 
 def main():
