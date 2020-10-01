@@ -1,10 +1,14 @@
 import pandas as pd
 import json
 import re
+import time
 
 def get_features(row):
     """ access the wanted fields from one row of data """
-    location_id = row["location"]["id"]
+    try:
+        location_id = row["location"]["id"]
+    except:
+        location_id = None
     try:
         location_name = row["location"]["name"]
     except:
@@ -33,21 +37,36 @@ def get_features(row):
 
 
 def read():
-    filepath = '/Users/valeri/Documents/GitHub/SeasonalHotspots/DataScraping/736780008/test.json'
+    filepath = '/Users/valeri/Documents/GitHub/SeasonalHotspots/DataScraping/20k.json'
+
+    start = time.time()
 
     with open(filepath) as f:
         data = json.load(f)
     data = data["GraphImages"]
 
-    print(len(data)) # there is 20 pictures scraped
+    end = time.time()
+    print("Reading the json", end - start)
 
-    # create a dataframe for out data
-    df = pd.DataFrame(columns = ["location_id", "location_name", "address", "zip_code", "city_name", "region_name", "tags", "timestamp"])
-    for i in range(len(data)):
-        print(i)
-        df.loc[len(df)] = get_features(data[i])
+    print(len(data)) # there is 20000 pictures scraped
+    print(type(data)) # list
 
-    print(df.head())
+    start = time.time()
+
+    temp = pd.DataFrame(list(map(get_features, data)),
+        columns = ["location_id", "location_name", "address", "zip_code", "city_name", "region_name", "tags", "timestamp"])
+    
+    end = time.time()
+    print("mapping to df: ", end - start)
+
+    # create a dataframe for out data with a loop -> very ineffective and slow
+    # start = time.time()
+    # df = pd.DataFrame(columns = ["location_id", "location_name", "address", "zip_code", "city_name", "region_name", "tags", "timestamp"])
+    # for i in range(len(data)):
+    #     df.loc[len(df)] = get_features(data[i])
+    # end = time.time()
+    # print("mapping to df with loop: ", end - start)
+
 
 
 def main():
