@@ -37,11 +37,11 @@ def get_features(row):
 
 
 def read():
-    filepath = '/Users/valeri/Documents/GitHub/SeasonalHotspots/DataScraping/20k.json'
+    filepath = 'C:/Users/manal/Documents/UNIVERSITY OF HELSINKI/Introduction to Data Science/SeasonalHotspots/DataScraping/20k.json'
 
     start = time.time()
 
-    with open(filepath) as f:
+    with open(filepath, encoding="utf8") as f:
         data = json.load(f)
     data = data["GraphImages"]
 
