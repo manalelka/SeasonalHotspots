@@ -12,3 +12,12 @@ Next steps :
 - Impact on the covid situation on summer tourism.
 
 FYI : we need to scrape more data --> best if we could scrape data from June to August.
+
+Tasks :
+
+- Classification algorithm : to predict most used tags/locations, probably more --> Manal (scikit learn)
+- Figure out when people visit locations and use tags the most --> Manal / Valeri 
+- Clustering algorithm : let the machine do the classification by itself --> Olavi (scikit learn)
+- Scrape 200k rows --> Olavi 
+- Get info about the "cool" and interactive visualization tools : seaborn python, streamlit --> Valeri 
+- WORK ON THE PITCH!!! (12/10) --> probably meet on next Thursday :)
