@@ -11,7 +11,7 @@ Next steps :
 - For the most used tags, when do people use them the most?
 - Impact on the covid situation on summer tourism.
 
-~~FYI : we need to scrape more data --> best if we could scrape data from June to August. ~~
+~~FYI : we need to scrape more data --> best if we could scrape data from June to August.~~
   -> we now have data from 2020-07-11 16:29:18 to 2020-10-03 09:37:24
 
 Tasks :
