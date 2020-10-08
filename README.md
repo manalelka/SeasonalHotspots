@@ -6,8 +6,8 @@ https://github.com/arc298/instagram-scraper
 Next steps : 
 
 - Most used tags.
-- Most visited places (make sure to not take into account the location "Helsinki")
-- For the most visited locations, when do people visit them the most ?
+- ~~Most visited places (make sure to not take into account the location "Helsinki")~~ mostly just helsinki in the 100k file..
+- ~~For the most visited locations, when do people visit them the most ?~~ this goes with the previous point
 - For the most used tags, when do people use them the most?
 - Impact on the covid situation on summer tourism.
 
