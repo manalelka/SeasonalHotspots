@@ -56,7 +56,6 @@ def loadData():
     data = data["GraphImages"]
     df = pd.DataFrame(list(map(get_features, data)),
         columns = ["location_id", "location_name", "address", "zip_code", "city_name", "region_name", "tags", "timestamp"])
-    end = time.time()
     return df
 
 df=loadData()
@@ -76,20 +75,44 @@ def get_top_tags(df):
 top_tags=get_top_tags(df)
 
 # Create and generate a word cloud image:
+st.subheader("Top 1000 Tags used in Helsinki ")
 wordcloud = WordCloud().generate(str(top_tags))
 # Display the generated image:
 plt.imshow(wordcloud, interpolation='bilinear')
 plt.axis("off")
 #plt.show()
 st.pyplot(plt)
-
-def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-
-def remote_css(url):
-    st.markdown(f'<link href="{url}" rel="stylesheet">', unsafe_allow_html=True)    
-
+def findMonthsForTag(df,tag):
+    times_df  = pd.DataFrame(columns = ['Tag', 'Timestamps'])
+    for ind in df.index: 
+        if(df['tags'][ind]):
+            if(tag in str(df.iloc[ind][6])):
+                temp=pd.DataFrame([[tag,df.iloc[ind][7].strftime('%#m')]], columns= ['Tag', 'Timestamps'])
+                times_df=times_df.append(temp,ignore_index = True)
+    times_df=(times_df.groupby('Tag')['Timestamps']
+       .apply(lambda x: ','.join(map(str, x)))
+       .reset_index())
+    return times_df
+def tagTimestamps(interestingTag):
+    print(interestingTag)
+    res=findMonthsForTag(df,interestingTag)
+    if(res.empty==False):
+        months = list(map(int, (res['Timestamps'].values)[0].split(",")))
+        fig, ax = plt.subplots()
+        bins = np.arange(1,14)
+        ax.hist(months, bins = bins, edgecolor="k", align='left')
+        ax.set_xticks(bins[:-1])
+        ax.set_xticklabels([dt.date(1900,i,1).strftime('%b') for i in bins[:-1]] )
+        title='Use of the tag "'+interestingTag+ '" along the summertime.'
+        plt.title(title)
+        plt.show()
+        st.pyplot(plt)
+    else:
+        st.text("Tag not used.")
+st.subheader("Seasonaly centers of interest ")
 selected = st.text_input("", "Search...")
-print(selected)
-button_clicked = st.button("OK")
+if (selected != "Search..."):
+    print("HEREEEE")
+    print(selected)
+    tagTimestamps(selected)
+    st.text(selected)
