@@ -15,7 +15,7 @@ Tasks :
 
 Pitch parts splitting : 
 
-Presenting the context : Olavi
+- Presenting the context : Olavi
 
 - Demo :
   - [ ] Top 100 +General time analysis --> Manal
