@@ -19,6 +19,6 @@ Tasks :
 - Classification algorithm : to predict most used tags/locations, probably more --> Manal (scikit learn)
 - Figure out when people visit locations and use tags the most --> Manal / Valeri 
 - Clustering algorithm : let the machine do the classification by itself --> Olavi (scikit learn)
-- ~~Scrape 200k rows --> Olavi ~~100k is good enough since we almost have 3 months of data now
+- ~~Scrape 200k rows --> Olavi~~ 100k is good enough since we almost have 3 months of data now
 - Get info about the "cool" and interactive visualization tools : seaborn python, streamlit --> Valeri 
 - WORK ON THE PITCH!!! (12/10) --> probably meet on next Thursday :)
