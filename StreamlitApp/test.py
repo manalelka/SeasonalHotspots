@@ -14,8 +14,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 import streamlit as st
 from wordcloud import WordCloud
 
-st.title('Seasonal hotspots')
-
 def get_features(row):
     """ access the wanted fields from one row of data """
     try:
@@ -74,14 +72,18 @@ def get_top_tags(df):
     return list(top_tags)
 top_tags=get_top_tags(df)
 
-# Create and generate a word cloud image:
-st.subheader("Top 1000 Tags used in Helsinki ")
-wordcloud = WordCloud().generate(str(top_tags))
-# Display the generated image:
-plt.imshow(wordcloud, interpolation='bilinear')
-plt.axis("off")
-#plt.show()
-st.pyplot(plt)
+
+def plotWordCloud():
+    # Create and generate a word cloud image:
+    st.subheader("Top 1000 Tags used in Helsinki ")
+    wordcloud = WordCloud().generate(str(top_tags))
+    # Display the generated image:
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.axis("off")
+    #plt.show()
+    st.pyplot(plt)
+
+
 def findMonthsForTag(df,tag):
     times_df  = pd.DataFrame(columns = ['Tag', 'Timestamps'])
     for ind in df.index: 
@@ -94,7 +96,6 @@ def findMonthsForTag(df,tag):
        .reset_index())
     return times_df
 def tagTimestamps(interestingTag):
-    print(interestingTag)
     res=findMonthsForTag(df,interestingTag)
     if(res.empty==False):
         months = list(map(int, (res['Timestamps'].values)[0].split(",")))
@@ -109,10 +110,21 @@ def tagTimestamps(interestingTag):
         st.pyplot(plt)
     else:
         st.text("Tag not used.")
+
+
+def plotTagHist():
+    selected = st.text_input("", "Search...")
+    if (selected != "Search..."):
+        tagTimestamps(selected)
+
+        
+st.title('Seasonal hotspots')
+plotWordCloud()
 st.subheader("Seasonaly centers of interest ")
-selected = st.text_input("", "Search...")
-if (selected != "Search..."):
-    print("HEREEEE")
-    print(selected)
-    tagTimestamps(selected)
-    st.text(selected)
+plotTagHist()
+st.subheader("Trends")
+st.subheader("Locations")
+
+
+
+
