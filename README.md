@@ -10,7 +10,7 @@ Tasks :
 - Add other metrics to the specific tag (including freq and nb of posts) --> Manal
 - Optimize histogram showing --> Manal
 - Work on the streamlit app style --> Olavi
-- Structure the code (architecture) --> Olavi
+- DONE: Structure the code (architecture) --> Olavi
 - Slides (MAX 2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!) --> Olavi 
 
 Pitch parts splitting : 
