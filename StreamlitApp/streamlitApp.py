@@ -47,15 +47,15 @@ def get_features(row):
 
     return [location_id, location_name, address, zip_code, city_name, region_name, tags, timestamp]
 
+@st.cache
 def loadData():
-    filepath = '../DataScraping/100k.json'
-    with open(filepath, encoding = 'utf8') as f:
+    filepath = '../DataScraping/20k.json'
+    with open(filepath) as f:
         data = json.load(f)
     data = data["GraphImages"]
     df = pd.DataFrame(list(map(get_features, data)),
         columns = ["location_id", "location_name", "address", "zip_code", "city_name", "region_name", "tags", "timestamp"])
     return df
-
 
 def get_top_tags(df):
     tag_counts = {}
@@ -71,29 +71,28 @@ def get_top_tags(df):
     return list(top_tags)
 
 
-
+@st.cache
 def plotWordCloud(top_tags):
     # Create and generate a word cloud image:
-    st.subheader("Top 1000 Tags used in Helsinki ")
+
     wordcloud = WordCloud().generate(str(top_tags))
     # Display the generated image:
-    plt.imshow(wordcloud, interpolation='bilinear')
-    plt.axis("off")
-    #plt.show()
-    st.pyplot(plt)
 
+    #plt.show()
+    return wordcloud
 
 def findMonthsForTag(df,tag):
     times_df  = pd.DataFrame(columns = ['Tag', 'Timestamps'])
     for ind in df.index: 
         if(df['tags'][ind]):
             if(tag in str(df.iloc[ind][6])):
-                temp=pd.DataFrame([[tag,df.iloc[ind][7].strftime('%#m')]], columns= ['Tag', 'Timestamps'])
+                temp=pd.DataFrame([[tag,df.iloc[ind][7].strftime('%m')]], columns= ['Tag', 'Timestamps'])
                 times_df=times_df.append(temp,ignore_index = True)
     times_df=(times_df.groupby('Tag')['Timestamps']
        .apply(lambda x: ','.join(map(str, x)))
        .reset_index())
     return times_df
+
 def tagTimestamps(df,interestingTag):
     res=findMonthsForTag(df,interestingTag)
     if(res.empty==False):
@@ -121,7 +120,11 @@ def main():
     df=loadData()
     top_tags=get_top_tags(df)
     st.title('Seasonal hotspots')
-    plotWordCloud(top_tags)
+    st.subheader("Top 1000 Tags used in Helsinki ")
+    wordcloud = plotWordCloud(top_tags)
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.axis("off")
+    st.pyplot(plt)
     st.subheader("Seasonaly centers of interest ")
     plotTagHist(df)
     st.subheader("Trends")
