@@ -17,6 +17,7 @@ from loadingData import *
 from tagAnalysis import *
        
 def main():
+    local_css ('style.css')
     df=loadData()
     top_tags=get_top_tags(df)
     st.title('Seasonal hotspots')
