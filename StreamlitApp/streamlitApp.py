@@ -56,7 +56,6 @@ def loadData():
         columns = ["location_id", "location_name", "address", "zip_code", "city_name", "region_name", "tags", "timestamp"])
     return df
 
-df=loadData()
 
 def get_top_tags(df):
     tag_counts = {}
@@ -70,10 +69,10 @@ def get_top_tags(df):
     tag_counts = sorted(tag_counts.items(), key=operator.itemgetter(1), reverse=True)
     top_tags = map(lambda row: row[0], tag_counts[0:1000])
     return list(top_tags)
-top_tags=get_top_tags(df)
 
 
-def plotWordCloud():
+
+def plotWordCloud(top_tags):
     # Create and generate a word cloud image:
     st.subheader("Top 1000 Tags used in Helsinki ")
     wordcloud = WordCloud().generate(str(top_tags))
@@ -95,7 +94,7 @@ def findMonthsForTag(df,tag):
        .apply(lambda x: ','.join(map(str, x)))
        .reset_index())
     return times_df
-def tagTimestamps(interestingTag):
+def tagTimestamps(df,interestingTag):
     res=findMonthsForTag(df,interestingTag)
     if(res.empty==False):
         months = list(map(int, (res['Timestamps'].values)[0].split(",")))
@@ -112,18 +111,25 @@ def tagTimestamps(interestingTag):
         st.text("Tag not used.")
 
 
-def plotTagHist():
+def plotTagHist(df):
     selected = st.text_input("", "Search...")
     if (selected != "Search..."):
-        tagTimestamps(selected)
+        tagTimestamps(df,selected)
 
         
-st.title('Seasonal hotspots')
-plotWordCloud()
-st.subheader("Seasonaly centers of interest ")
-plotTagHist()
-st.subheader("Trends")
-st.subheader("Locations")
+def main():
+    df=loadData()
+    top_tags=get_top_tags(df)
+    st.title('Seasonal hotspots')
+    plotWordCloud(top_tags)
+    st.subheader("Seasonaly centers of interest ")
+    plotTagHist(df)
+    st.subheader("Trends")
+    st.subheader("Locations")
+
+if __name__ == "__main__":
+    main()
+
 
 
 
