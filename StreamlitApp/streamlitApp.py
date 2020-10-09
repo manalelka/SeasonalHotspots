@@ -16,7 +16,8 @@ from wordcloud import WordCloud
 from loadingData import *
 from tagAnalysis import *
 from timeseries import *
-       
+from perfectTag import findGoodTag
+
 def main():
     local_css ('style.css')
     ##Loading the data:
@@ -37,14 +38,18 @@ def main():
         st.markdown("<div class='container-div'> <div> Number of posts: "+nb+"</div> <div> Posting frequency: "+freq+"</div></div>", unsafe_allow_html=True)
     st.subheader("Trends")
     st.subheader("Locations")
-    
+    st.subheader("Good Tag")
+    #gt = findGoodTag(df['tags'])
+    #st.write(gt)
+
+
     st.subheader("Time series")
     ts = to_ts(df)
     ts2 = agg_ts(ts)
     st.text(ts2.columns)
     fig = fcast(ts2)
     st.pyplot(fig)
-    
+
 if __name__ == "__main__":
     main()
 
