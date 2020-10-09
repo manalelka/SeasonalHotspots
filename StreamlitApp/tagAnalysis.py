@@ -38,7 +38,7 @@ def findMonthsForTag(df,tag):
     for ind in df.index: 
         if(df['tags'][ind]):
             if(tag in str(df.iloc[ind][6])):
-                temp=pd.DataFrame([[tag,df.iloc[ind][7].strftime('%#m')]], columns= ['Tag', 'Timestamps'])
+                temp=pd.DataFrame([[tag,df.iloc[ind][7].strftime('%m')]], columns= ['Tag', 'Timestamps'])
                 times_df=times_df.append(temp,ignore_index = True)
     times_df=(times_df.groupby('Tag')['Timestamps']
        .apply(lambda x: ','.join(map(str, x)))
