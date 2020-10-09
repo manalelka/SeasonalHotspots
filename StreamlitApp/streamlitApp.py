@@ -18,16 +18,22 @@ from tagAnalysis import *
        
 def main():
     local_css ('style.css')
+    ##Loading the data:
     df=loadData()
     top_tags=get_top_tags(df)
     st.title('Seasonal hotspots')
+    #Tags
     st.subheader("Top 1000 Tags used in Helsinki ")
     wordcloud = plotWordCloud(top_tags)
     plt.imshow(wordcloud, interpolation='bilinear')
     plt.axis("off")
     st.pyplot(plt)
     st.subheader("Seasonaly centers of interest ")
-    plotTagHist(df)
+    selected = st.text_input("", "Search...")
+    if (selected != "Search..."):
+        plotTagHist(df,selected)
+        nb, freq =nbPosts_freq(selected)
+        st.markdown("<div class='container-div'> <div> Number of posts: "+nb+"</div> <div> Posting frequency: "+freq+"</div></div>", unsafe_allow_html=True)
     st.subheader("Trends")
     st.subheader("Locations")
 

@@ -15,3 +15,20 @@ h1,h3 {
 .stTextInput>div>div>input {
 
 }
+
+.left-div {
+    float:left;  
+    width:55%; 
+    height:40px; 
+    font-weight: bold;
+}
+.right-div {
+    width:55%; 
+    height:40px; 
+    font-weight: bold;
+}
+
+.container-div{
+    display:flex;
+    justify-content: space-between;
+}

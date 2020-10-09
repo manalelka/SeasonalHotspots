@@ -27,7 +27,7 @@ def get_top_tags(df):
     tag_counts = sorted(tag_counts.items(), key=operator.itemgetter(1), reverse=True)
     top_tags = map(lambda row: row[0], tag_counts[0:1000])
     return list(top_tags)
-    
+
 @st.cache
 def plotWordCloud(top_tags):
     wordcloud = WordCloud().generate(str(top_tags))
@@ -57,12 +57,57 @@ def tagTimestamps(df,interestingTag):
         title='Use of the tag "'+interestingTag+ '" along the summertime.'
         plt.title(title)
         plt.show()
-        st.pyplot(plt)
+        hist_values = np.histogram(months, bins=bins, range=(0,24))[0]
+        st.bar_chart(hist_values)
+
     else:
         st.text("Tag not used.")
 
 
-def plotTagHist(df):
-    selected = st.text_input("", "Search...")
-    if (selected != "Search..."):
-        tagTimestamps(df,selected)
+def plotTagHist(df,selected):
+    tagTimestamps(df,selected)
+
+
+def nbPosts_freq(tag):
+    driver = webdriver.Chrome(ChromeDriverManager().install())
+    tag_df  = pd.DataFrame(columns = ['Hashtag', 'Number of Posts', 'Posting Freq (mins)'])
+    driver.get('https://www.instagram.com/explore/tags/'+str(tag))
+    soup = BeautifulSoup(driver.page_source,"lxml")
+    # Extract current hashtag name
+    tagname = tag
+    # Extract total number of posts in this hashtag
+    # NOTE: Class name may change in the website code
+    # Get the latest class name by inspecting web code
+    if(soup.find('span', {'class': 'g47SY'})):
+        nposts = soup.find('span', {'class': 'g47SY'}).text
+        # Extract all post links from 'explore tags' page
+        # Needed to extract post frequency of recent posts
+        myli = []
+        for a in soup.find_all('a', href=True):
+            myli.append(a['href'])
+        # Keep link of only 1st and 9th most recent post
+        newmyli = [x for x in myli if x.startswith('/p/')]
+        newmyli =[newmyli[-1], newmyli[0]]
+        timediff = []
+        # Extract the posting time of 1st and 9th most recent post for a tag
+        for j in range(len(newmyli)):
+            driver.get('https://www.instagram.com'+str(newmyli[j]))
+            soup = BeautifulSoup(driver.page_source,"lxml")
+            for i in soup.findAll('time'):
+                if i.has_attr('datetime'):
+                    timediff.append(i['datetime'])
+                    #print(i['datetime'])
+
+        # Calculate time difference between posts
+        # For obtaining posting frequency
+        datetimeFormat = '%Y-%m-%dT%H:%M:%S.%fZ'
+        diff = dt.datetime.strptime(timediff[0], datetimeFormat)- dt.datetime.strptime(timediff[1], datetimeFormat)
+        #print(dt.datetime.strptime(timediff[0], datetimeFormat),dt.datetime.strptime(timediff[1], datetimeFormat))
+        pfreq= int(diff.total_seconds()/(9*60))
+        if(pfreq==0):
+            pfreq="very high (less than 1 min)"
+        print(pfreq)
+        # Add hashtag info to dataframe
+        tag_df.loc[len(tag_df)] = [tagname, nposts, pfreq]
+    driver.quit()
+    return  nposts, pfreq

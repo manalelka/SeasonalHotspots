@@ -49,7 +49,7 @@ def get_features(row):
 
 @st.cache
 def loadData():
-    filepath = '../DataScraping/20k.json'
+    filepath = '../DataScraping/100k.json'
     with open(filepath, encoding ='utf8') as f:
         data = json.load(f)
     data = data["GraphImages"]
