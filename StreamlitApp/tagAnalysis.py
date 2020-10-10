@@ -58,7 +58,7 @@ def tagTimestamps(df,interestingTag):
         ax.hist(months, bins = bins, edgecolor="k", align='left')
         ax.set_xticks(bins[:-1])
         ax.set_xticklabels([dt.date(1900,i,1).strftime('%b') for i in bins[:-1]] )
-        title='Use of the tag "'+interestingTag+ '" along the summertime.'
+        title=' Use of the tag "'+interestingTag+ '" along the summertime. '
         plt.title(title)
         plt.show()
         st.pyplot(plt)
