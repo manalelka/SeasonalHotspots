@@ -47,7 +47,7 @@ def get_features(row):
         region_name = []
     return [location_id, location_name, address, zip_code, city_name, region_name, tags, timestamp]
 
-@st.cache
+@st.cache(allow_output_mutation=True)
 def loadData():
     filepath = '../DataScraping/100k.json'
     with open(filepath, encoding ='utf8') as f:

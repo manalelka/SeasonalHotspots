@@ -25,12 +25,16 @@ def get_top_tags(df):
                 else:
                     tag_counts[tag] = 1
     tag_counts = sorted(tag_counts.items(), key=operator.itemgetter(1), reverse=True)
-    top_tags = map(lambda row: row[0], tag_counts[0:1000])
-    return list(top_tags)
+    tag_counts = map(lambda row: row[0], tag_counts)
+    return list(tag_counts)
+
+def getRankTag(tag,tagsList):
+    rank = str(tagsList.index(tag)+1) + " out of " + str(len(tagsList)) + " tags."
+    return rank
 
 @st.cache
-def plotWordCloud(top_tags):
-    wordcloud = WordCloud().generate(str(top_tags))
+def plotWordCloud(tag_counts):
+    wordcloud = WordCloud().generate(str(tag_counts[0:100])) #We only get the first 100 tags 
     return wordcloud
 
 def findMonthsForTag(df,tag):
@@ -57,9 +61,7 @@ def tagTimestamps(df,interestingTag):
         title='Use of the tag "'+interestingTag+ '" along the summertime.'
         plt.title(title)
         plt.show()
-        hist_values = np.histogram(months, bins=bins, range=(0,24))[0]
-        st.bar_chart(hist_values)
-
+        st.pyplot(plt)
     else:
         st.text("Tag not used.")
 

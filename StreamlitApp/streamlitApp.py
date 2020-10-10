@@ -23,11 +23,11 @@ def main():
     local_css ('style.css')
     ##Loading the data:
     df=loadData()
-    top_tags=get_top_tags(df)
+    tags_count=get_top_tags(df)
     st.title('Seasonal hotspots')
     #Tags
     st.subheader("Top 1000 Tags used in Helsinki ")
-    wordcloud = plotWordCloud(top_tags)
+    wordcloud = plotWordCloud(tags_count)
     plt.imshow(wordcloud, interpolation='bilinear')
     plt.axis("off")
     st.pyplot(plt)
@@ -45,10 +45,10 @@ def main():
     selected = st.text_input("", "Search...")
     if (selected != "Search..."):
         plotTagHist(df,selected)
-        # nb, freq =nbPosts_freq(selected)
-        # st.markdown("<div class='container-div'> <div> Number of posts: "+nb+"</div> <div> Posting frequency: "+freq+"</div></div>", unsafe_allow_html=True)
-    # st.subheader("Trends")
-    # st.subheader("Locations")
+        nb, freq =nbPosts_freq(selected)
+        rank = getRankTag(selected,tags_count)
+        st.markdown("<div class='container-div'> <div> Number of posts: "+nb+"</div> <div> Posting frequency: "+freq+"</div><div> Tag Rank : "+rank+"</div></div>", unsafe_allow_html=True)
+    
     # st.subheader("Good Tag")
     # gt = findGoodTag(df['tags'])
     # st.write(gt)

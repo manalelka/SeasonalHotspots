@@ -29,6 +29,7 @@ h1,h3 {
 }
 
 .container-div{
+    width: 800px;
     display:flex;
     justify-content: space-between;
 }
