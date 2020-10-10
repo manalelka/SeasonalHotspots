@@ -3,16 +3,16 @@ def to_ts(df):
     ts['count'] = 1
     return ts
     
-def agg_ts(ts, agg_size = '24H'):
-    ts = ts.resample(agg_size).sum() # add variable resampling!
+def agg_ts(ts, agg_size = '24H', tag = 'count'):
+    ts = ts.resample(agg_size).sum() 
     ts['ds'] = ts.index
-    ts.rename(columns={'count':'y'}, inplace = True)
-    #ts.drop(min(ts4.index), inplace = True) # dropping the 12th since it is not complete for daily aggregation
-    #ts.drop(max(ts4.index), inplace = True) # dropping the 12th since it is not complete for daily aggregation
+    ts.rename(columns={tag:'y'}, inplace = True)
+    ts.drop([min(ts.index), max(ts.index)], inplace = True) # dropping the incomplete instances
+    # ts.drop(max(ts.index), inplace = True)
     return ts
 
-def fcast(ts, h=10, freq = 'D'):
-    ''' Automatically forecast with defalt values of 10 as h and daily frequency'''
+def fcast(ts, h=7, freq = 'D'):
+    ''' Automatically forecast with defalt values of 7 as h and daily frequency'''
     from fbprophet import Prophet
 
     m = Prophet(changepoint_prior_scale=0.05).fit(ts)
@@ -20,4 +20,4 @@ def fcast(ts, h=10, freq = 'D'):
     fcst = m.predict(future)
     y_hat = m.plot(fcst)
     fig = m.plot_components(fcst)
-    return fig
+    return y_hat, fig
