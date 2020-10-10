@@ -1,3 +1,5 @@
+import streamlit as st
+
 def to_ts(df):
     ts = df.set_index("timestamp")
     ts['count'] = 1
@@ -11,11 +13,12 @@ def agg_ts(ts, agg_size = '24H', tag = 'count'):
     # ts.drop(max(ts.index), inplace = True)
     return ts
 
+
 def fcast(ts, h=7, freq = 'D'):
     ''' Automatically forecast with defalt values of 7 as h and daily frequency'''
     from fbprophet import Prophet
 
-    m = Prophet(changepoint_prior_scale=0.05).fit(ts)
+    m = Prophet(changepoint_prior_scale=0.001).fit(ts)
     future = m.make_future_dataframe(periods=h, freq=freq)
     fcst = m.predict(future)
     y_hat = m.plot(fcst)

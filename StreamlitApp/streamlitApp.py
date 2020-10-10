@@ -55,8 +55,9 @@ def main():
 
     st.subheader("Tag prediction")
     if (selected != "Search..."):
-        df[selected] = df["tags"].apply(lambda x: 1 if selected in x else 0)
-        ts = to_ts(df)
+        df2 = df
+        df2[selected] = df2["tags"].apply(lambda x: 1 if selected in x else 0)
+        ts = to_ts(df2)
         ts = agg_ts(ts, '24H', selected)
         forecast, components = fcast(ts, 7, 'D')
         st.pyplot(forecast)
