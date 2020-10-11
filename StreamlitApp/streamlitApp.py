@@ -21,13 +21,36 @@ from fbprophet import Prophet
 
 def main():
     local_css ('style.css')
+
+    Title_html = """
+        <style>
+            .title {
+                background-image: url("https://live.staticflickr.com/4441/36144860233_be0fbab4de_b.jpg");
+                background-repeat: cover;
+                border-radius: 1rem;
+
+            }
+            .title h1{
+              user-select: none;
+              font-size: 7rem;
+
+            }
+        </style>
+        <div>
+            <div class="title">
+                <h1>Insights of Helsinki</h1>
+            </div>
+             <h3>Top 1000 Tags In The Area<h3>
+        </div>
+        """
+    st.markdown(Title_html, unsafe_allow_html=True)
+
     ##Loading the data:
     df=loadData()
     tags_count=get_top_tags(df)
-    st.title('Seasonal hotspots')
     #Tags
-    st.subheader("Top 1000 Tags used in Helsinki ")
-    wordcloud = plotWordCloud(tags_count)
+    #wordcloud = plotWordCloud(tags_count)
+    wordcloud = WordCloud(height=300, width=300, margin=1, random_state=1, background_color='white', colormap='rainbow', collocations=False).generate(tags_count)
     plt.imshow(wordcloud, interpolation='bilinear')
     plt.axis("off")
     st.pyplot(plt)
@@ -58,7 +81,7 @@ def main():
         plotTagHist(df,selected)
         nb, freq =nbPosts_freq(selected)
         rank = getRankTag(selected,tags_count)
-        st.markdown("<div class='container-div'> <div> Number of posts: "+nb+"</div> <div> Posting frequency: "+freq+"</div><div> Tag Rank : "+rank+"</div></div>", unsafe_allow_html=True)
+        st.markdown("<div class='card'> <div class='container'><div> <b>Number of posts:</b> </div><div>"+nb+"</div></div></div><div class='card'> <div class='container'><div><b> Posting frequency:</b></div><div>"+freq+"</div></div></div><div class='card'><div class='container'><div><b> Tag Rank: </b></div><div>"+rank+"</div></div></div>", unsafe_allow_html=True)
     
     # st.subheader("Good Tag")
     # gt = findGoodTag(df['tags'])
@@ -85,6 +108,7 @@ def main():
         st.pyplot(forecast2)
         st.pyplot(components2)
 
+    st.subheader('And more...')
 
 if __name__ == "__main__":
     main()

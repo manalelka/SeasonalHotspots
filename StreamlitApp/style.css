@@ -1,9 +1,36 @@
-body {
+@import url(https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap);
 
+body {
+    cursor: pointer;
 }
 
+.reportview-container {
+    background-color: white;
+    /*background-image: url(https://live.staticflickr.com/4441/36144860233_be0fbab4de_b.jpg);
+    background-size: cover;*/
+}
+
+.block-container {
+    padding-top: 0 !important;
+}
+
+.main {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+h1 {
+    font-family: 'Dancing Script', cursive;
+}
+h3 {
+    font-family: 'Bebas Neue', cursive;
+}
 h1,h3 {
     text-align: center !important;
+}
+
+h1:hover,h3:hover {
+    zoom: 1.01;
+
 }
 
 .stButton>button {
@@ -32,4 +59,20 @@ h1,h3 {
     width: 800px;
     display:flex;
     justify-content: space-between;
+}
+
+.card {
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 16px;
 }

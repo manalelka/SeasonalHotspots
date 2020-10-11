@@ -15,6 +15,7 @@ import streamlit as st
 from wordcloud import WordCloud
 from loadingData import *
 
+@st.cache
 def get_top_tags(df):
     tag_counts = {}
     for tags in df.tags.values:
@@ -26,10 +27,10 @@ def get_top_tags(df):
                     tag_counts[tag] = 1
     tag_counts = sorted(tag_counts.items(), key=operator.itemgetter(1), reverse=True)
     tag_counts = map(lambda row: row[0], tag_counts)
-    return list(tag_counts)
+    return ' '.join(list(tag_counts))
 
 def getRankTag(tag,tagsList):
-    rank = str(tagsList.index(tag)+1) + " out of " + str(len(tagsList)) + " tags."
+    rank = str(tagsList.index(tag)+1) + " out of " + str(len(tagsList)) + " tags"
     return rank
 
 @st.cache
@@ -107,7 +108,7 @@ def nbPosts_freq(tag):
         #print(dt.datetime.strptime(timediff[0], datetimeFormat),dt.datetime.strptime(timediff[1], datetimeFormat))
         pfreq= int(diff.total_seconds()/(9*60))
         if(pfreq==0):
-            pfreq="very high (less than 1 min)"
+            pfreq="Very high (less than 1 min)"
         print(pfreq)
         # Add hashtag info to dataframe
         tag_df.loc[len(tag_df)] = [tagname, nposts, pfreq]
