@@ -11,6 +11,7 @@ from sklearn import linear_model, model_selection, feature_selection
 from selenium import webdriver
 from bs4 import BeautifulSoup
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
 import streamlit as st
 from wordcloud import WordCloud
 from loadingData import *
@@ -72,7 +73,9 @@ def plotTagHist(df,selected):
 
 
 def nbPosts_freq(tag):
-    driver = webdriver.Chrome(ChromeDriverManager().install())
+    options = Options()
+    options.add_argument('--no-sandbox')
+    driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=options)
     tag_df  = pd.DataFrame(columns = ['Hashtag', 'Number of Posts', 'Posting Freq (mins)'])
     driver.get('https://www.instagram.com/explore/tags/'+str(tag))
     soup = BeautifulSoup(driver.page_source,"lxml")
