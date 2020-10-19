@@ -87,6 +87,7 @@ def nbPosts_freq(tag):
     # NOTE: Class name may change in the website code
     # Get the latest class name by inspecting web code
     nposts = 0
+    pfreq = ""
     if(soup.find('span', {'class': 'g47SY'})):
         nposts = soup.find('span', {'class': 'g47SY'}).text
         # Extract all post links from 'explore tags' page
