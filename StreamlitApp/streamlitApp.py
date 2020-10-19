@@ -16,7 +16,7 @@ from wordcloud import WordCloud
 from loadingData import *
 from tagAnalysis import *
 from timeseries import *
-from perfectTag import findGoodTag
+from educatedTag import *
 from fbprophet import Prophet
 
 def main():
@@ -48,6 +48,7 @@ def main():
     ##Loading the data:
     df=loadData()
     tags_count=get_top_tags(df)
+    tag_clusters = find_clusters(df['tags'])
     #Tags
     #wordcloud = plotWordCloud(tags_count)
     wordcloud = WordCloud(height=300, width=300, margin=1, random_state=1, background_color='white', colormap='rainbow', collocations=False).generate(tags_count)
@@ -83,11 +84,6 @@ def main():
         rank = getRankTag(selected,tags_count)
         st.markdown("<div class='card'> <div class='container'><div> <b>Number of posts:</b> </div><div>"+nb+"</div></div></div><div class='card'> <div class='container'><div><b> Posting frequency:</b></div><div>"+freq+"</div></div></div><div class='card'><div class='container'><div><b> Tag Rank: </b></div><div>"+rank+"</div></div></div>", unsafe_allow_html=True)
     
-    # st.subheader("Good Tag")
-    # gt = findGoodTag(df['tags'])
-    # st.write(gt)
-
-    
     if (selected != "Search..."):
         st.subheader("Tag time series")
         df2 = df
@@ -108,7 +104,19 @@ def main():
         st.pyplot(forecast2)
         st.pyplot(components2)
 
-    st.subheader('And more...')
+    st.subheader('Tag clusters')
+    st.text('Cluster groups below are built automatically using machine learning. You probably notice\nsome common theme inside the clusters. If you find relevant theme for you business, try\nusing combination of three tags in that cluster in you next social media post! Good luck!')
+
+    i = 0
+    for cluster in tag_clusters:
+        st.markdown(f"CLUSTER {i + 1}.")
+        st.write(pd.DataFrame({
+            'Tag': tag_clusters[i][0],
+            'Popular': tag_clusters[i][1],
+            'Frequency': tag_clusters[i][2],
+        }))
+        i += 1
+
 
 if __name__ == "__main__":
     main()
