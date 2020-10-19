@@ -119,5 +119,5 @@ def nbPosts_freq(tag):
         # Add hashtag info to dataframe
         tag_df.loc[len(tag_df)] = [tagname, nposts, pfreq]
     driver.quit()
-    sleep(3)
+    time.sleep(3)
     return  nposts, pfreq
