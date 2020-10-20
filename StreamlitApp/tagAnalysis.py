@@ -15,6 +15,8 @@ from selenium.webdriver.chrome.options import Options
 import streamlit as st
 from wordcloud import WordCloud
 from loadingData import *
+from datetime import *
+import datetime
 
 @st.cache
 def get_top_tags(df):
@@ -71,54 +73,18 @@ def tagTimestamps(df,interestingTag):
 def plotTagHist(df,selected):
     tagTimestamps(df,selected)
 
-
-def nbPosts_freq(tag):
-    options = Options()
-    options.add_argument('--no-sandbox')
-    options.add_argument('--headless')
-    options.add_argument('--disable-dev-shm-usage')
-    driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=options)
-    tag_df  = pd.DataFrame(columns = ['Hashtag', 'Number of Posts', 'Posting Freq (mins)'])
-    driver.get('https://www.instagram.com/explore/tags/'+str(tag))
-    soup = BeautifulSoup(driver.page_source,"lxml")
-    # Extract current hashtag name
-    tagname = tag
-    # Extract total number of posts in this hashtag
-    # NOTE: Class name may change in the website code
-    # Get the latest class name by inspecting web code
-    nposts = "0"
-    pfreq = "no-time"
-    if(soup.find('span', {'class': 'g47SY'})):
-        nposts = soup.find('span', {'class': 'g47SY'}).text
-        # Extract all post links from 'explore tags' page
-        # Needed to extract post frequency of recent posts
-        myli = []
-        for a in soup.find_all('a', href=True):
-            myli.append(a['href'])
-        # Keep link of only 1st and 9th most recent post
-        newmyli = [x for x in myli if x.startswith('/p/')]
-        newmyli =[newmyli[-1], newmyli[0]]
-        timediff = []
-        # Extract the posting time of 1st and 9th most recent post for a tag
-        for j in range(len(newmyli)):
-            driver.get('https://www.instagram.com'+str(newmyli[j]))
-            soup = BeautifulSoup(driver.page_source,"lxml")
-            for i in soup.findAll('time'):
-                if i.has_attr('datetime'):
-                    timediff.append(i['datetime'])
-                    #print(i['datetime'])
-
-        # Calculate time difference between posts
-        # For obtaining posting frequency
-        datetimeFormat = '%Y-%m-%dT%H:%M:%S.%fZ'
-        diff = dt.datetime.strptime(timediff[0], datetimeFormat)- dt.datetime.strptime(timediff[1], datetimeFormat)
-        #print(dt.datetime.strptime(timediff[0], datetimeFormat),dt.datetime.strptime(timediff[1], datetimeFormat))
-        pfreq= int(diff.total_seconds()/(9*60))
-        if(pfreq==0):
-            pfreq="Very high (less than 1 min)"
-        print(pfreq)
-        # Add hashtag info to dataframe
-        tag_df.loc[len(tag_df)] = [tagname, nposts, pfreq]
-    driver.quit()
-    time.sleep(3)
-    return  nposts, pfreq
+def freq_nbPosts(df,tag):
+    freq=0
+    nbPosts=0
+    minT = date.today()
+    maxT =datetime.date(2019, 5, 17)
+    for ind in df.index: 
+        if(df['tags'][ind]):
+            if(tag in str(df.iloc[ind][6])):
+                nbPosts=nbPosts+1
+                if(df.iloc[ind][7]<minT):
+                    minT=df.iloc[ind][7]
+                if(df.iloc[ind][7]>maxT):
+                    maxT=df.iloc[ind][7]
+    freq = abs(maxT - minT).total_seconds()/(nbPosts*60)
+    return freq,nbPosts

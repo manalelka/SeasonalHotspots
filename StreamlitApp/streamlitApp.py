@@ -80,9 +80,9 @@ def main():
     selected = st.text_input("", "Search...")
     if (selected != "Search..."):
         plotTagHist(df,selected)
-        nb, freq =nbPosts_freq(selected)
+        freq , nb =freq_nbPosts(df,selected)
         rank = getRankTag(selected,tags_count)
-        st.markdown("<div class='card'> <div class='container'><div> <b>Number of posts:</b> </div><div>"+nb+"</div></div></div><div class='card'> <div class='container'><div><b> Posting frequency:</b></div><div>"+freq+"</div></div></div><div class='card'><div class='container'><div><b> Tag Rank: </b></div><div>"+rank+"</div></div></div>", unsafe_allow_html=True)
+        st.markdown("<div class='card'> <div class='container'><div> <b>Number of posts:</b> </div><div>"+str(nb)+"</div></div></div><div class='card'> <div class='container'><div><b> Posting frequency:</b></div><div>"+str(int(freq))+" minutes </div></div></div><div class='card'><div class='container'><div><b> Tag Rank: </b></div><div>"+rank+"</div></div></div>", unsafe_allow_html=True)
     
     if (selected != "Search..."):
         st.subheader("Tag time series")
