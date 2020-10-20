@@ -86,8 +86,8 @@ def nbPosts_freq(tag):
     # Extract total number of posts in this hashtag
     # NOTE: Class name may change in the website code
     # Get the latest class name by inspecting web code
-    nposts = "0"
-    pfreq = "no-time"
+    #nposts = "0"
+    #pfreq = "no-time"
     if(soup.find('span', {'class': 'g47SY'})):
         nposts = soup.find('span', {'class': 'g47SY'}).text
         # Extract all post links from 'explore tags' page
