@@ -1,33 +1,14 @@
 # SeasonalHotspots
 
-Ig-scraper.
-https://github.com/arc298/instagram-scraper
+![img](https://lh3.googleusercontent.com/o36hhZyiw-VoOtPkxbapylbql4UDX8tEn-5A8tMCeVnGqXnUKpiWNfxiif_2kcpHLFHVh4qH6y6k3CO-u5vDvBv0x4EgZZ7yMCWrah9GdP58GnLAq93hsz68btH9dJd2nfw2AVjw)
 
-Tasks :
+ Our application is a data analysis tool that allows to find areas in Helsinki with a high tourist density or provide a better understanding about the region’s activities in general. The customer segment is cities’ councils or other regional public actors. To limit the scope of this project we selected the city of Helsinki. However, we would be open to testing our application on bigger cities, and therefore, more data. 
 
-- Time analysis with the same tag --> Valeri 
+The initial idea behind this is to scrape pictures from Instagram, which is a photo-sharing platform and social network where users upload photos for others to see. Each picture has a date, a location, and an amount of tags. 
 
-- Add general time analysis below to wordcloud --> Valeri
+This information would allow us to figure out the city’s hotspots for each season based on the date when the picture was taken. The tags would be useful to sort out the different attractions of the city and the centers of interest. 
 
-- Add other metrics to the specific tag (including freq and nb of posts) --> Manal
-  -freq (done)
-  
-  -number of posts (done)
-  
-  -tag rank (how "nature" ranks among all tag percentage) (done)
-  
-- Optimize histogram showing --> Manal (done)
+The instagram scraper used : https://github.com/arc298/instagram-scraper
 
-- Work on the streamlit app style --> Olavi (tehnology validated, just edit css)
-  -MAKE SHIT PRETTY
-  
-- Slides (MAX) --> Olavi (basic idea done)
--Try to do something with the "perfect tag"
+The link to the app :  [**http://207.154.207.107:8501/**](http://207.154.207.107:8501/)
 
-Pitch parts splitting : 
-
-- Presenting the context : Olavi
-
-- Demo :
-  - [ ] Top 100 +General time analysis --> Manal
-  - [ ] Search for tag + specific tag time analysis --> Valeri
